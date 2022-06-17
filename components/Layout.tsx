@@ -1,11 +1,17 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from "react";
+
+import { Main, Footer, Header } from "@/components";
 
 interface ComponentProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
-export default function Layout({children}: ComponentProps) {
+export default function Layout({ children }: ComponentProps) {
   return (
-    <main>{children}</main>
-  )
+    <div className="flex flex-col min-h-screen bg-teal-100">
+      <Header />
+      <Main>{children}</Main>
+      <Footer />
+    </div>
+  );
 }
