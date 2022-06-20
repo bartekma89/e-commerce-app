@@ -8,7 +8,7 @@ interface ComponentProps {
 
 export default function Layout({ children }: ComponentProps) {
   return (
-    <div className="flex flex-col min-h-screen bg-teal-100">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Header />
       <Main>{children}</Main>
       <Footer />

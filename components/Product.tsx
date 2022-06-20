@@ -1,15 +1,11 @@
 import { Rating } from "@/components";
+import { Product } from "@/types/Product.types";
 
 interface ComponentProps {
-  data: {
-    description: string;
-    thumbnailUrl: string;
-    thumbnailAlt: string;
-    rating: number;
-  };
+  data: Product;
 }
 
-export default function Product({ data }: ComponentProps) {
+export default function ProductCmp({ data }: ComponentProps) {
   return (
     <>
       <img src={data.thumbnailUrl} alt={data.thumbnailAlt} />
