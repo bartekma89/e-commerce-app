@@ -1,10 +1,5 @@
-import { Product } from "@/components";
+function HomePage() {
+  <div>HomePage</div>;
+}
 
-import products from "@/data/products.json";
-
-const Home = () =>
-  products.map((product) => (
-    <Product key={product.thumbnailUrl} data={product} />
-  ));
-
-export default Home;
+export default HomePage;
