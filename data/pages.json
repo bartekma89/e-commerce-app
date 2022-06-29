@@ -6,5 +6,9 @@
   {
     "name": "About",
     "href": "/about"
+  },
+  {
+    "name": "Products",
+    "href": "/products"
   }
 ]

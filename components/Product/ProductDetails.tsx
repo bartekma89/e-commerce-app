@@ -2,6 +2,7 @@ import React from "react";
 import Link from 'next/link'
 
 import { ProductDetails } from "@/types/Product.types";
+import { Pages } from "@/types/Pages.enum";
 
 interface ComponentProps {
   data: ProductDetails;
@@ -10,7 +11,7 @@ interface ComponentProps {
 function ProductDetails({ data }: ComponentProps) {
   return (
     <div>
-      <Link href="/products">
+      <Link href={Pages.PRODUCTS}>
         <a>Back</a>
       </Link>
       <p>{data.category}</p>

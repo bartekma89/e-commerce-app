@@ -1,17 +1,20 @@
 import React from "react";
 import { InferGetStaticPropsType } from "next";
 
-import { ProductCard } from "@/components";
-import {fetchProducts} from "@/lib/products"
+import { Pagination, ProductCard } from "@/components";
+import { fetchProducts } from "@/lib/products";
 
 function ProductsPage({
   data,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8">
-      {data.map(({ id, title, image, category, rating }) => (
-        <div key={id}>
+    <div>
+      <div className="flex justify-center">
+      </div>
+      <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8">
+        {data.map(({ id, title, image, category, rating }) => (
           <ProductCard
+            key={id}
             data={{
               id,
               title,
@@ -21,14 +24,14 @@ function ProductsPage({
               rating,
             }}
           />
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
 
 export const getStaticProps = async () => {
-  const data = await fetchProducts()
+  const data = await fetchProducts();
 
   return {
     props: {
