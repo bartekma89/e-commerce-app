@@ -1,8 +1,7 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { useRouter } from "next/router";
 
-import { Pagination, ProductCard } from "@/components";
+import { PaginationCSR as Pagination, ProductCard } from "@/components";
 import { StoreApiResponse } from "@/types/Product.types";
 import { ITEMS_PER_PAGE, TOTAL_PAGE } from "@/constants";
 
@@ -22,7 +21,6 @@ function ProductsPage() {
     () => getProducts(page),
     { keepPreviousData: true }
   );
-  const router = useRouter();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -43,7 +41,7 @@ function ProductsPage() {
           page={page}
           totalPages={TOTAL_PAGE}
           handlePagination={handlePages}
-        ></Pagination>
+        />
       </div>
       <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8">
         {data.map(({ id, title, image, category, rating }) => (

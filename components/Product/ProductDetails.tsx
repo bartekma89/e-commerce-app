@@ -1,19 +1,23 @@
 import React from "react";
-import Link from 'next/link'
+import Link from "next/link";
 
 import { ProductDetails } from "@/types/Product.types";
 import { Pages } from "@/types/Pages.enum";
+import { useRouter } from "next/router";
 
 interface ComponentProps {
   data: ProductDetails;
 }
 
 function ProductDetails({ data }: ComponentProps) {
+  const { back } = useRouter();
+
   return (
     <div>
-      <Link href={Pages.PRODUCTS}>
-        <a>Back</a>
-      </Link>
+      <button onClick={back} type="button">
+        Back
+      </button>
+      <br />
       <p>{data.category}</p>
       <p>{data.description}</p>
       <p>{data.title}</p>

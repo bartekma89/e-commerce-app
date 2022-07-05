@@ -11,7 +11,7 @@ interface ComponentProps {
 
 function ProductCard({ data }: ComponentProps) {
   return (
-    <Link href={`${Pages.PRODUCTS}/${data.id}`}>
+    <Link href={`${Pages.PRODUCTS}/product/${data.id}`}>
       <a className="group cursor-pointer border-2 border-transparent shadow-xl rounded-lg">
         <div className="w-full aspect-w-1 aspect-h-1 bg-white rounded-t-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
           <img
