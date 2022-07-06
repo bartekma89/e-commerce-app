@@ -49,10 +49,7 @@ export default ProductDetailsPage;
 
 export const getStaticPaths = async () => {
   const res = await fetch(
-    `https://naszsklep-api.vercel.app/api/products?take=${
-      ITEMS_PER_PAGE
-      //  * TOTAL_PAGE
-    }`
+    `https://naszsklep-api.vercel.app/api/products?take=${ITEMS_PER_PAGE}`
   );
   const data: StoreApiResponse[] | [] = await res.json();
 
