@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import { NavLink as Link } from "@/components";
 import { formatNumber } from "@/lib/helpers";
 import { Pages } from "@/types/Pages.enum";
@@ -15,12 +13,8 @@ function ProductCard({ data }: ComponentProps) {
   return (
     <Link href={`${Pages.PRODUCTS}/product/${data.id}`}>
       <a className="group cursor-pointer border-2 border-transparent shadow-xl rounded-lg">
-        <div className="w-full bg-white rounded-t-lg overflow-hidden p-4">
-          <Image
-            objectFit="contain"
-            layout="responsive"
-            width={16}
-            height={9}
+        <div className="w-full aspect-w-1 aspect-h-1 bg-white rounded-t-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
+          <img
             src={data.thumbnailUrl}
             alt={data.thumbnailAlt}
             className="w-full h-full object-center object-contain group-hover:opacity-75 p-3"
