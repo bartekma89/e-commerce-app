@@ -6,6 +6,7 @@ import { Pagination, ProductCard } from "@/components";
 import { StoreApiResponse } from "@/types/Product.types";
 import { ITEMS_PER_PAGE, TOTAL_PAGE } from "@/constants";
 import { InferGetStaticPaths } from "@/types/global.types";
+import { recursiveFetch } from "@/lib/helpers";
 
 async function fetchProducts(currentPage: string) {
   const OFF_SET = ITEMS_PER_PAGE * Number(currentPage) - ITEMS_PER_PAGE;
@@ -27,7 +28,7 @@ function ProductsPage({
     return <div>Loading ...</div>;
   }
 
-  if (!data) {
+  if (!data || !totalPages) {
     return <div>Something went wrong</div>;
   }
 
@@ -67,34 +68,38 @@ export const getStaticPaths = async () => {
   const paths = Array.from({ length: TOTAL_PAGE }, (_, idx) => {
     return {
       params: {
-        productsPageNumber: String(idx + 1),
+        pageNumber: String(idx + 1),
       },
     };
   });
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 };
 
 export const getStaticProps = async ({
   params,
 }: InferGetStaticPaths<typeof getStaticPaths>) => {
-  if (!params?.productsPageNumber) {
+  if (!params?.pageNumber) {
     return {
       props: {},
       notFound: true,
     };
   }
 
-  const data = await fetchProducts(params.productsPageNumber);
+  const data = await fetchProducts(params.pageNumber);
+  const numberOfProducts = await recursiveFetch({
+    offset: 0,
+    currentRecords: 0,
+  });
 
   return {
     props: {
       data,
-      totalPages: TOTAL_PAGE,
-      currentPage: Number(params.productsPageNumber),
+      totalPages: Math.floor(numberOfProducts / ITEMS_PER_PAGE),
+      currentPage: Number(params.pageNumber),
     },
   };
 };
