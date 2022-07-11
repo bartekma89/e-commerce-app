@@ -5,7 +5,7 @@ import { formatNumber } from "@/lib/helpers";
 import { Pages } from "@/types/Pages.enum";
 import { ProductDetails } from "@/types/Product.types";
 
-type ProductCard = Omit<ProductDetails, "description">;
+type ProductCard = Omit<ProductDetails, "description" | "longDescription">;
 
 interface ComponentProps {
   data: ProductCard;

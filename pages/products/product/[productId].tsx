@@ -29,6 +29,7 @@ function ProductDetailsPage({
         thumbnailUrl: data.image,
         rating: data.rating,
         category: data.category,
+        longDescription: data.longDescription,
       }}
     />
   );
