@@ -9,6 +9,7 @@ export interface ProductDetails {
   };
   category: string;
   id: number;
+  longDescription: string;
 }
 
 export interface StoreApiResponse {
@@ -18,6 +19,7 @@ export interface StoreApiResponse {
   description: string;
   category: string;
   image: string;
+  longDescription: string;
   rating: {
     rate: number;
     count: number;

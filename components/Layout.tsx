@@ -1,5 +1,7 @@
 import React, { ReactNode } from "react";
 
+import { NextSeo } from "next-seo";
+
 import { Main, Footer, Header } from "@/components";
 
 interface ComponentProps {
