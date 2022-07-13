@@ -95,6 +95,13 @@ export const getStaticProps = async ({
     currentRecords: 0,
   });
 
+  if (!data) {
+    return {
+      props: {},
+      norFound: true,
+    };
+  }
+
   return {
     props: {
       data,

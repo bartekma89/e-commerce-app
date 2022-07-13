@@ -1,29 +1,32 @@
 import React from "react";
 
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
+import { MDXRemote } from 'next-mdx-remote'
+import { MarkdownResultType } from "@/types/Product.types";
+import { isInternalLink } from "@/lib/helpers";
 
 interface ComponentProps {
-  children: string;
+  children: MarkdownResultType;
 }
 
-function Markdown({children}: ComponentProps) {
+function Markdown({ children }: ComponentProps) {
   return (
-    <ReactMarkdown
+    <MDXRemote
+      {...children}
       components={{
         a: ({ href, ...props }) => {
           if (!href) {
             return <a {...props} />;
           }
-          console.log(href);
-          return (
+
+          return isInternalLink(href) ? (
             <Link href={href}>
-              <a {...props} />
+              <a  {...props} />
             </Link>
-          );
+          ) : <a {...props} href={href} rel="noopener noreferrer" />;
         },
       }}
-    >{children}</ReactMarkdown>
+    />
   );
 }
 

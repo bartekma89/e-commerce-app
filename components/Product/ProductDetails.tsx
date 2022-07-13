@@ -1,11 +1,9 @@
-import ReactMarkdown from "react-markdown";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 
 import { ProductDetails } from "@/types/Product.types";
-import { Markdown } from "@/components";
-import Rating from "../Rating";
+import { Markdown, Rating } from "@/components";
 
 interface ComponentProps {
   data: ProductDetails;
