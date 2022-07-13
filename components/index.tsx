@@ -8,3 +8,4 @@ export { default as ProductCard } from "./Product/ProductCard";
 export { default as ProductDetails } from "./Product/ProductDetails";
 export { default as PaginationCSR } from "./Pagination";
 export { default as Pagination } from "./PaginationSSG";
+export { default as Markdown } from "./Markdown";

@@ -1,9 +1,10 @@
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
-
-import { ProductDetails } from "@/types/Product.types";
 import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
+
+import { ProductDetails } from "@/types/Product.types";
+import { Markdown } from "@/components";
 import Rating from "../Rating";
 
 interface ComponentProps {
@@ -51,7 +52,7 @@ function ProductDetails({ data }: ComponentProps) {
       <p className="p-4">{data.description}</p>
       <Rating rating={data.rating.rate} />
       <article className="prose lg:prose-xl">
-        <ReactMarkdown>{data.longDescription}</ReactMarkdown>
+        <Markdown>{data.longDescription}</Markdown>
       </article>
     </>
   );
