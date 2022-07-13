@@ -1,5 +1,6 @@
 import { InferGetStaticPropsType } from "next";
 import { useRouter } from "next/router";
+import { serialize } from 'next-mdx-remote/serialize'
 
 import { ProductDetails } from "@/components";
 import { StoreApiResponse } from "@/types/Product.types";
@@ -66,11 +67,21 @@ export const getStaticProps = async ({
   const res = await fetch(
     `https://naszsklep-api.vercel.app/api/products/${params.productId}`
   );
-  const data: StoreApiResponse = await res.json();
+  const data: StoreApiResponse | null = await res.json();
+
+  if (!data) {
+    return {
+      props: {},
+      notFound: true,
+    };
+  }
 
   return {
     props: {
-      data,
+      data: {
+        ...data,
+        longDescription: await serialize(data.longDescription)
+      }
     },
   };
 };

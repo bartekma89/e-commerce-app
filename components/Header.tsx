@@ -26,7 +26,6 @@ export default function Header() {
                 <DesktopNav pages={pages} />
               </div>
             </div>
-
             <MobileNav pages={pages} />
           </>
         )}

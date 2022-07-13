@@ -34,3 +34,7 @@ export const recursiveFetch = async ({
 
   return recursiveFetch({ offset: offset + ITEMS, currentRecords: records });
 };
+
+export function isInternalLink(url: string) {
+  return url.startsWith("/");
+}
