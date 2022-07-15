@@ -5,5 +5,5 @@ interface ComponentProps {
 }
 
 export default function Main({ children }: ComponentProps) {
-  return <main className="flex-grow max-w-6xl mx-auto p-6">{children}</main>;
+  return <main className="flex-grow max-w-6xl mx-auto p-6 w-full">{children}</main>;
 }
