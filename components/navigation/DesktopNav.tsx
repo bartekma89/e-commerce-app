@@ -2,7 +2,6 @@ import React from "react";
 import { useRouter } from "next/router";
 
 import { NavLink } from "@/components";
-
 import { PageType } from "./types";
 
 interface ComponentProps {
@@ -33,5 +32,6 @@ export default function DesktopNav({ pages }: ComponentProps) {
         </div>
       </div>
     </div>
+
   );
 }
