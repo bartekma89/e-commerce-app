@@ -7,6 +7,8 @@ import { StoreApiResponse } from "@/types/Product.types";
 import { ITEMS_PER_PAGE, TOTAL_PAGE } from "@/constants";
 import { InferGetStaticPaths } from "@/types/global.types";
 import { recursiveFetch } from "@/lib/helpers";
+import { apolloClient } from "@/graphql/apolloClient";
+import { gql } from "@apollo/client";
 
 async function fetchProducts(currentPage: string) {
   const OFF_SET = ITEMS_PER_PAGE * Number(currentPage) - ITEMS_PER_PAGE;
@@ -19,16 +21,17 @@ async function fetchProducts(currentPage: string) {
 
 function ProductsPage({
   data,
-  currentPage,
-  totalPages,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+}: // currentPage,
+// totalPages,
+InferGetStaticPropsType<typeof getStaticProps>) {
   const { isFallback, push } = useRouter();
 
   if (isFallback) {
     return <div>Loading ...</div>;
   }
 
-  if (!data || !totalPages) {
+  // if (!data || !totalPages) {
+  if (!data) {
     return <div>Something went wrong</div>;
   }
 
@@ -38,24 +41,25 @@ function ProductsPage({
 
   return (
     <div>
-      <div className="flex justify-center mt-5 mb-7">
+      {/* <div className="flex justify-center mt-5 mb-7">
         <Pagination
           page={currentPage}
           totalPages={totalPages}
           handlePagination={handlePagination}
         />
-      </div>
+      </div> */}
       <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8">
-        {data.map(({ id, title, image, category, rating }) => (
+        {data.products.map((product) => (
           <ProductCard
-            key={id}
+            key={product.slug}
             data={{
-              id,
-              title,
-              thumbnailUrl: image,
-              thumbnailAlt: title,
-              category,
-              rating,
+              id: product.slug,
+              title: product.name,
+              thumbnailUrl: product.images[0].url,
+              thumbnailAlt: product.name,
+              price: product.price,
+              category: product.categories[0].name,
+              rating: 5,
             }}
           />
         ))}
@@ -89,11 +93,33 @@ export const getStaticProps = async ({
     };
   }
 
-  const data = await fetchProducts(params.pageNumber);
-  const numberOfProducts = await recursiveFetch({
-    offset: 0,
-    currentRecords: 0,
+  // const data = await fetchProducts(params.pageNumber);
+  const { data } = await apolloClient.query<GetProductsListResponse>({
+    query: gql`
+      query GetProductsList {
+        products {
+          price
+          name
+          slug
+          images(first: 1) {
+            id
+            url
+            width
+            height
+          }
+          categories(first: 1) {
+            id
+            name
+          }
+        }
+      }
+    `,
   });
+
+  // const numberOfProducts = await recursiveFetch({
+  //   offset: 0,
+  //   currentRecords: 0,
+  // });
 
   if (!data) {
     return {
@@ -105,10 +131,34 @@ export const getStaticProps = async ({
   return {
     props: {
       data,
-      totalPages: Math.floor(numberOfProducts / ITEMS_PER_PAGE),
-      currentPage: Number(params.pageNumber),
+      // totalPages: Math.floor(numberOfProducts / ITEMS_PER_PAGE),
+      // currentPage: Number(params.pageNumber),
     },
   };
 };
 
 export default ProductsPage;
+
+export interface GetProductsListResponse {
+  products: Product[];
+}
+
+export interface Product {
+  // id: string;
+  price: number;
+  name: string;
+  slug: string;
+  images: Image[];
+  categories: Category[];
+}
+
+export interface Category {
+  name: string;
+}
+
+export interface Image {
+  id: string;
+  url: string;
+  width: number;
+  height: number;
+}

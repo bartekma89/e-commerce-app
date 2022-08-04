@@ -9,12 +9,10 @@ export interface ProductDetails {
   description: string;
   thumbnailUrl: string;
   thumbnailAlt: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-  category: string;
-  id: number;
+  rating: number;
+  price: number;
+  category?: string;
+  id: string;
   longDescription: MarkdownResultType;
 }
 
