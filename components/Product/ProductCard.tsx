@@ -35,7 +35,7 @@ function ProductCard({ data }: ComponentProps) {
             <p className="mt-1 text-md italic text-gray-500">{data.category}</p>
             <div className="flex justify-between">
               <p className="mt-1 text-lg font-medium text-gray-900">
-                {formatNumber(data.rating.count, "pl-PL", {
+                {formatNumber(data.price, "pl-PL", {
                   style: "currency",
                   currency: "PLN",
                 })}
@@ -50,7 +50,7 @@ function ProductCard({ data }: ComponentProps) {
             cartState.addItemToCart({
               id: data.id,
               title: data.title,
-              price: data.rating.count,
+              price: data.price,
               count: 1,
             })
           }

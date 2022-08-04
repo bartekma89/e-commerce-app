@@ -11,7 +11,7 @@ interface CartItem {
   readonly price: number;
   readonly title: string;
   readonly count: number;
-  readonly id: number;
+  readonly id: string;
 }
 
 interface CartState {
