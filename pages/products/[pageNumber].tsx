@@ -6,9 +6,11 @@ import { Pagination, ProductCard } from "@/components";
 import { StoreApiResponse } from "@/types/Product.types";
 import { ITEMS_PER_PAGE, TOTAL_PAGE } from "@/constants";
 import { InferGetStaticPaths } from "@/types/global.types";
-import { recursiveFetch } from "@/lib/helpers";
 import { apolloClient } from "@/graphql/apolloClient";
-import { gql } from "@apollo/client";
+import {
+  GetProductsListDocument,
+  GetProductsListQuery,
+} from "@/generated/graphql";
 
 async function fetchProducts(currentPage: string) {
   const OFF_SET = ITEMS_PER_PAGE * Number(currentPage) - ITEMS_PER_PAGE;
@@ -21,17 +23,16 @@ async function fetchProducts(currentPage: string) {
 
 function ProductsPage({
   data,
-}: // currentPage,
-// totalPages,
-InferGetStaticPropsType<typeof getStaticProps>) {
+  currentPage,
+  totalPages,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const { isFallback, push } = useRouter();
 
   if (isFallback) {
     return <div>Loading ...</div>;
   }
 
-  // if (!data || !totalPages) {
-  if (!data) {
+  if (!data || !totalPages) {
     return <div>Something went wrong</div>;
   }
 
@@ -40,7 +41,7 @@ InferGetStaticPropsType<typeof getStaticProps>) {
   };
 
   return (
-    <div>
+    <div className="mt-5">
       {/* <div className="flex justify-center mt-5 mb-7">
         <Pagination
           page={currentPage}
@@ -93,33 +94,13 @@ export const getStaticProps = async ({
     };
   }
 
-  // const data = await fetchProducts(params.pageNumber);
-  const { data } = await apolloClient.query<GetProductsListResponse>({
-    query: gql`
-      query GetProductsList {
-        products {
-          price
-          name
-          slug
-          images(first: 1) {
-            id
-            url
-            width
-            height
-          }
-          categories(first: 1) {
-            id
-            name
-          }
-        }
-      }
-    `,
+  const { data } = await apolloClient.query<GetProductsListQuery>({
+    query: GetProductsListDocument,
   });
 
-  // const numberOfProducts = await recursiveFetch({
-  //   offset: 0,
-  //   currentRecords: 0,
-  // });
+  const numberOfProducts = data.products.length;
+  const totalPages = Math.floor(numberOfProducts / ITEMS_PER_PAGE);
+  const currentPage = Number(params.pageNumber);
 
   if (!data) {
     return {
@@ -131,34 +112,10 @@ export const getStaticProps = async ({
   return {
     props: {
       data,
-      // totalPages: Math.floor(numberOfProducts / ITEMS_PER_PAGE),
-      // currentPage: Number(params.pageNumber),
+      totalPages: totalPages === 0 ? 1 : totalPages,
+      currentPage,
     },
   };
 };
 
 export default ProductsPage;
-
-export interface GetProductsListResponse {
-  products: Product[];
-}
-
-export interface Product {
-  // id: string;
-  price: number;
-  name: string;
-  slug: string;
-  images: Image[];
-  categories: Category[];
-}
-
-export interface Category {
-  name: string;
-}
-
-export interface Image {
-  id: string;
-  url: string;
-  width: number;
-  height: number;
-}

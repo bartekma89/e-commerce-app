@@ -3,11 +3,15 @@ import { useRouter } from "next/router";
 import { serialize } from "next-mdx-remote/serialize";
 
 import { ProductDetails } from "@/components";
-// import { StoreApiResponse } from "@/types/Product.types";
 import { InferGetStaticPaths } from "@/types/global.types";
-// import { ITEMS_PER_PAGE } from "@/constants";
 import { apolloClient } from "@/graphql/apolloClient";
-import { gql } from "@apollo/client";
+import {
+  GetProductDetailsBySlugDocument,
+  GetProductDetailsBySlugQuery,
+  GetProductDetailsBySlugQueryVariables,
+  GetProductsSlugsDocument,
+  GetProductsSlugsQuery,
+} from "@/generated/graphql";
 
 function ProductDetailsPage({
   data,
@@ -40,23 +44,9 @@ function ProductDetailsPage({
 
 export default ProductDetailsPage;
 
-interface GetProductsSlugsResponse {
-  products: ProductSlug[];
-}
-
-interface ProductSlug {
-  slug: string;
-}
-
 export const getStaticPaths = async () => {
-  const { data } = await apolloClient.query<GetProductsSlugsResponse>({
-    query: gql`
-      query GetProducts {
-        products {
-          slug
-        }
-      }
-    `,
+  const { data } = await apolloClient.query<GetProductsSlugsQuery>({
+    query: GetProductsSlugsDocument,
   });
 
   const paths = data.products.map(({ slug }) => ({
@@ -71,25 +61,6 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface GetProductDetailsBySlugResponse {
-  product: Product;
-}
-
-interface Product {
-  id: string;
-  slug: string;
-  name: string;
-  description: string;
-  images: Image[];
-  price: number;
-}
-
-interface Image {
-  url: string;
-  width: number;
-  height: number;
-}
-
 export const getStaticProps = async ({
   params,
 }: InferGetStaticPaths<typeof getStaticPaths>) => {
@@ -100,34 +71,17 @@ export const getStaticProps = async ({
     };
   }
 
-  // const res = await fetch(
-  //   `https://naszsklep-api.vercel.app/api/products/${params.productId}`
-  // );
-  // const data: StoreApiResponse | null = await res.json();
-
-  const { data } = await apolloClient.query<GetProductDetailsBySlugResponse>({
+  const { data } = await apolloClient.query<
+    GetProductDetailsBySlugQuery,
+    GetProductDetailsBySlugQueryVariables
+  >({
     variables: {
       slug: params.productId,
     },
-    query: gql`
-      query GetProductDetailsBySlug($slug: String) {
-        product(where: { slug: $slug }) {
-          id
-          slug
-          name
-          description
-          images {
-            url
-            width
-            height
-          }
-          price
-        }
-      }
-    `,
+    query: GetProductDetailsBySlugDocument,
   });
 
-  if (!data) {
+  if (!data.product) {
     return {
       props: {},
       notFound: true,
