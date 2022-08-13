@@ -14,3 +14,5 @@ export { default as DesktopNav } from "./navigation/DesktopNav";
 export { default as MobileNav } from "./navigation/MobileNav";
 export { default as CartContent } from "./Cart/CartContent";
 export { default as CartSummary } from "./Cart/CartSummary";
+export { default as CheckoutForm } from "./CheckoutForm";
+export { default as FormInput } from "./Form/FormInput";
