@@ -10,9 +10,5 @@
   {
     "name": "Products",
     "href": "/products/1"
-  },
-  {
-    "name": "Checkout",
-    "href": "/checkout"
   }
 ]

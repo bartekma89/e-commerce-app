@@ -1,6 +1,10 @@
-import { formatNumber } from "@/lib/helpers";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import { formatNumber } from "@/lib/helpers";
+import { FormInput } from "@/components";
 
 const countries = [
   {
@@ -60,25 +64,30 @@ const products = [
   },
 ];
 
-interface CheckoutFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  cardNumber: string;
-  cardExpirationDate: string;
-  cardCvc: string;
-  country: string;
-  postalCode: string;
-}
+const checkoutFomSchema = yup
+  .object({
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
+    email: yup.string().email().required(),
+    phone: yup.string().required(),
+    cardNumber: yup.string().required(),
+    cardExpirationDate: yup.string().required(),
+    cardCvc: yup.string().required(),
+    country: yup.string().required(),
+    postalCode: yup.string().required(),
+  })
+  .required();
+
+export type CheckoutFormData = yup.InferType<typeof checkoutFomSchema>;
 
 export default function CheckoutForm() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm<CheckoutFormData>();
+  } = useForm<CheckoutFormData>({
+    resolver: yupResolver(checkoutFomSchema),
+  });
 
   const onSubmit = handleSubmit((data) => console.log(data));
 
@@ -91,67 +100,48 @@ export default function CheckoutForm() {
           <div className="py-12 bg-white md:py-24">
             <div className="max-w-lg px-4 mx-auto lg:px-8">
               <form className="grid grid-cols-6 gap-4" onSubmit={onSubmit}>
-                <div className="col-span-3">
-                  <label
-                    className="block mb-1 text-sm text-gray-600"
-                    htmlFor="firstName"
-                  >
-                    First Name
-                  </label>
-
-                  <input
-                    className="rounded-lg shadow-sm border-gray-200 w-full text-sm p-2.5"
-                    id="firstName"
-                    type="text"
-                    {...register("firstName")}
-                  />
-                </div>
-
-                <div className="col-span-3">
-                  <label
-                    className="block mb-1 text-sm text-gray-600"
-                    htmlFor="lastName"
-                  >
-                    Last Name
-                  </label>
-
-                  <input
-                    className="rounded-lg shadow-sm border-gray-200 w-full text-sm p-2.5"
-                    id="lastName"
-                    type="text"
-                    {...register("lastName")}
-                  />
-                </div>
-
                 <div className="col-span-6">
-                  <label
-                    className="block mb-1 text-sm text-gray-600"
-                    htmlFor="email"
-                  >
-                    Email
-                  </label>
-
-                  <input
-                    className="rounded-lg shadow-sm border-gray-200 w-full text-sm p-2.5"
+                  <FormInput
+                    name="firstName"
+                    register={register}
+                    label="First Name"
+                    error={errors["firstName"]?.message}
                     type="text"
-                    id="email"
-                    {...register("email")}
+                    labelStyles="block mb-1 text-sm text-gray-600"
+                    inputStyles="rounded-lg shadow-sm border-gray-200 w-full text-sm p-2.5"
                   />
                 </div>
-
                 <div className="col-span-6">
-                  <label
-                    className="block mb-1 text-sm text-gray-600"
-                    htmlFor="phone"
-                  >
-                    Phone
-                  </label>
-
-                  <input
-                    className="rounded-lg shadow-sm border-gray-200 w-full text-sm p-2.5"
+                  <FormInput
+                    name="lastName"
+                    register={register}
+                    label="Last Name"
+                    error={errors["lastName"]?.message}
+                    type="text"
+                    labelStyles="block mb-1 text-sm text-gray-600"
+                    inputStyles="rounded-lg shadow-sm border-gray-200 w-full text-sm p-2.5"
+                  />
+                </div>
+                <div className="col-span-6">
+                  <FormInput
+                    name="email"
+                    register={register}
+                    label="Email"
+                    error={errors["email"]?.message}
+                    type="email"
+                    labelStyles="block mb-1 text-sm text-gray-600"
+                    inputStyles="rounded-lg shadow-sm border-gray-200 w-full text-sm p-2.5"
+                  />
+                </div>
+                <div className="col-span-6">
+                  <FormInput
+                    name="phone"
+                    register={register}
+                    label="Phone"
+                    error={errors["phone"]?.message}
                     type="tel"
-                    id="phone"
-                    {...register("phone")}
+                    labelStyles="block mb-1 text-sm text-gray-600"
+                    inputStyles="rounded-lg shadow-sm border-gray-200 w-full text-sm p-2.5"
                   />
                 </div>
 
@@ -162,45 +152,43 @@ export default function CheckoutForm() {
 
                   <div className="-space-y-px bg-white rounded-lg shadow-sm">
                     <div>
-                      <label className="sr-only" htmlFor="cardNumber">
-                        Card Number
-                      </label>
-
-                      <input
-                        className="border-gray-200 relative rounded-t-lg w-full focus:z-10 text-sm p-2.5 placeholder-gray-400"
-                        type="text"
-                        id="cardCumber"
+                      <FormInput
+                        name="cardNumber"
+                        register={register}
+                        label="Card Number"
+                        error={errors["cardNumber"]?.message}
+                        type="tel"
+                        labelStyles="sr-only"
+                        inputStyles="border-gray-200 relative rounded-t-lg w-full focus:z-10 text-sm p-2.5 placeholder-gray-400"
                         placeholder="Card number"
-                        {...register("cardNumber")}
                       />
                     </div>
 
                     <div className="flex -space-x-px">
                       <div className="flex-1">
-                        <label className="sr-only" htmlFor="cardExpirationDate">
-                          Expiration Date
-                        </label>
-
-                        <input
-                          className="border-gray-200 relative rounded-bl-lg w-full focus:z-10 text-sm p-2.5 placeholder-gray-400"
+                        <FormInput
+                          name="cardExpirationDate"
+                          register={register}
+                          label="Card Number"
+                          error={errors["cardExpirationDate"]?.message}
                           type="text"
-                          id="cardExpirationDate"
+                          labelStyles="sr-only"
+                          inputStyles="border-gray-200 relative rounded-bl-lg w-full focus:z-10 text-sm p-2.5 placeholder-gray-400"
                           placeholder="MM / YY"
-                          {...register("cardExpirationDate")}
+                          autoComplete="cc-exp"
                         />
                       </div>
 
                       <div className="flex-1">
-                        <label className="sr-only" htmlFor="cardCvc">
-                          CVC
-                        </label>
-
-                        <input
-                          className="border-gray-200 relative rounded-br-lg w-full focus:z-10 text-sm p-2.5 placeholder-gray-400"
+                        <FormInput
+                          name="cardCvc"
+                          register={register}
+                          label="Card Number"
+                          error={errors["cardCvc"]?.message}
                           type="text"
-                          id="cardCvc"
+                          labelStyles="sr-only"
+                          inputStyles="border-gray-200 relative rounded-br-lg w-full focus:z-10 text-sm p-2.5 placeholder-gray-400"
                           placeholder="CVC"
-                          {...register("cardCvc")}
                         />
                       </div>
                     </div>
@@ -232,17 +220,15 @@ export default function CheckoutForm() {
                       </select>
                     </div>
                     <div>
-                      <label className="sr-only" htmlFor="postalCode">
-                        ZIP/Post Code
-                      </label>
-
-                      <input
-                        className="border-gray-200 relative rounded-b-lg w-full focus:z-10 text-sm p-2.5 placeholder-gray-400"
+                      <FormInput
+                        name="postalCode"
+                        register={register}
+                        label="ZIP/Post Code"
+                        error={errors["postalCode"]?.message}
                         type="text"
-                        id="postalCode"
-                        autoComplete="postalCode"
+                        labelStyles="sr-only"
+                        inputStyles="border-gray-200 relative rounded-b-lg w-full focus:z-10 text-sm p-2.5 placeholder-gray-400"
                         placeholder="ZIP/Post Code"
-                        {...register("postalCode")}
                       />
                     </div>
                   </div>
