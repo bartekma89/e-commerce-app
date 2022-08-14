@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 
 import { ProductDetails } from "@/types/Product.types";
-import { Markdown, Rating } from "@/components";
+import { Markdown, Rating, ReviewTextarea } from "@/components";
 
 interface ComponentProps {
   data: ProductDetails;
@@ -52,6 +52,8 @@ function ProductDetails({ data }: ComponentProps) {
       <article className="prose lg:prose-xl">
         <Markdown>{data.longDescription}</Markdown>
       </article>
+      <br />
+      <ReviewTextarea />
     </>
   );
 }
