@@ -1,4 +1,4 @@
-import { Main } from "@/components";
+import { Main, NewsletterForm } from "@/components";
 import {
   CreateProductReviewDocument,
   CreateProductReviewMutation,
@@ -29,6 +29,8 @@ function HomePage() {
 
   return (
     <Main>
+      <NewsletterForm />
+      <br />
       <form>
         <button onClick={addReview} type="button">
           Add review

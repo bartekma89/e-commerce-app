@@ -16,4 +16,6 @@ export { default as CartContent } from "./Cart/CartContent";
 export { default as CartSummary } from "./Cart/CartSummary";
 export { default as CheckoutForm } from "./CheckoutForm";
 export { default as FormInput } from "./Form/FormInput";
-export { default as ReviewTextarea } from "./Form/ReviewTextarea";
+export { default as ProductReviewForm } from "./ProductReview/ProductReviewForm";
+export { default as NewsletterForm } from "./NewsletterForm";
+export { default as ProductReviewList } from "./ProductReview/ProductReviewList";

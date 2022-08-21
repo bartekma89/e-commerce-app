@@ -6,7 +6,10 @@ import { Pages } from "@/types/Pages.enum";
 import { ProductDetails } from "@/types/Product.types";
 import { useCartState } from "@/context/CartStateContext";
 
-type ProductCard = Omit<ProductDetails, "description" | "longDescription">;
+type ProductCard = Omit<
+  ProductDetails,
+  "description" | "longDescription" | "slug"
+>;
 
 interface ComponentProps {
   data: ProductCard;

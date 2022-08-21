@@ -3,7 +3,8 @@ import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 
 import { ProductDetails } from "@/types/Product.types";
-import { Markdown, Rating, ReviewTextarea } from "@/components";
+import { Markdown, Rating } from "@/components";
+import ProductReviewContainer from "../ProductReview/ProductReviewContainer";
 
 interface ComponentProps {
   data: ProductDetails;
@@ -53,7 +54,10 @@ function ProductDetails({ data }: ComponentProps) {
         <Markdown>{data.longDescription}</Markdown>
       </article>
       <br />
-      <ReviewTextarea />
+      <ProductReviewContainer
+        productSlug={data.slug}
+        productName={data.title}
+      />
     </>
   );
 }
