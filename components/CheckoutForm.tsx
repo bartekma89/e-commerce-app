@@ -70,7 +70,7 @@ const products = [
   },
 ];
 
-const checkoutFomSchema = yup
+const checkoutFormSchema = yup
   .object({
     firstName: yup.string().required(),
     lastName: yup.string().required(),
@@ -84,16 +84,15 @@ const checkoutFomSchema = yup
   })
   .required();
 
-export type CheckoutFormData = yup.InferType<typeof checkoutFomSchema>;
+export type CheckoutFormData = yup.InferType<typeof checkoutFormSchema>;
 
 export default function CheckoutForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
   } = useForm<CheckoutFormData>({
-    resolver: yupResolver(checkoutFomSchema),
+    resolver: yupResolver(checkoutFormSchema),
   });
   const { items } = useCartState();
   const [createOrder, createOrderResults] = useCreateOrderMutation();

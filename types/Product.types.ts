@@ -13,6 +13,7 @@ export interface ProductDetails {
   price: number;
   category?: string;
   id: string;
+  slug: string;
   longDescription: MarkdownResultType;
 }
 

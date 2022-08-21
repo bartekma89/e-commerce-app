@@ -29,6 +29,7 @@ function ProductDetailsPage({
   return (
     <ProductDetails
       data={{
+        slug: data.slug,
         id: data.slug,
         title: data.name,
         description: data.description,
